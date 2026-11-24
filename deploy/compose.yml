@@ -1,0 +1,35 @@
+version: "2.4"
+services:
+  postgres:
+    image: docker.m.daocloud.io/paradedb/paradedb:0.26.7-pg16
+    environment:
+      POSTGRES_DB: ${TRAVEL_DATABASE:-travel_planner_db}
+      POSTGRES_USER: ${PGVECTOR_USER:-travel}
+      POSTGRES_PASSWORD: ${PGVECTOR_PASSWORD:?Prepare .env first}
+    ports:
+      - "127.0.0.1:${PGVECTOR_PORT:-25432}:5432"
+    volumes:
+      - travel-db:/var/lib/postgresql/data
+      - ../database/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: docker.m.daocloud.io/library/redis:7.2.7-alpine
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Prepare .env first}
+    command: ["/bin/sh", "-c", 'exec redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD"']
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-26379}:6379"
+    volumes:
+      - travel-cache:/data
+    healthcheck:
+      test: ["CMD-SHELL", 'REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+volumes:
+  travel-db:
+  travel-cache:

@@ -1,0 +1,44 @@
+# =========================
+# IntelliJ IDEA
+# =========================
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# =========================
+# Maven
+# =========================
+target/
+
+# =========================
+# Gradle
+# =========================
+.gradle/
+build/
+
+# =========================
+# Logs and temporary files
+# =========================
+*.log
+logs/
+.codex-work/
+!src/main/resources/application*.yml
+!src/main/resources/application*.properties
+
+# =========================
+# OS generated
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Environment variables (sensitive)
+# =========================
+.env
+*.env
+
+# =========================
+# Debug / Heap dumps
+# =========================
+heapdump.hprof

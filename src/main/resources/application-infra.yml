@@ -1,0 +1,11 @@
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        api-key: infrastructure-only-no-model
+      streaming-chat-model:
+        api-key: infrastructure-only-no-model
+      embedding-model:
+        api-key: infrastructure-only-no-model
+mcp:
+  enabled: false

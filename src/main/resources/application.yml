@@ -1,0 +1,117 @@
+spring:
+  application:
+    name: zhixing-travel
+  datasource:
+    url: jdbc:postgresql://${PGVECTOR_HOST:localhost}:${PGVECTOR_PORT:5432}/${TRAVEL_DATABASE:travel_planner_db}
+    username: ${PGVECTOR_USER:chat}
+    password: ${PGVECTOR_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/02-checkpoints.sql,classpath:db/03-knowledge.sql,classpath:db/04-memory.sql
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 21MB
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 60000
+  mail:
+    host: ${MAIL_HOST:smtp.qq.com}
+    port: 587
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+server:
+  port: ${TRAVEL_PORT:10020}
+  servlet:
+    context-path: /api
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: assign_uuid
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        model-name: ${QWEN_MODEL:qwen3-max}
+        api-key: ${DASHSCOPE_API_KEY:}
+      streaming-chat-model:
+        model-name: ${QWEN_MODEL:qwen3-max}
+        api-key: ${DASHSCOPE_API_KEY:}
+      embedding-model:
+        model-name: ${EMBEDDING_MODEL:text-embedding-v4}
+        api-key: ${DASHSCOPE_API_KEY:}
+bigmodel:
+  api-key: ${BIGMODEL_API_KEY:}
+mcp:
+  enabled: ${MCP_ENABLED:false}
+  max-tool-rounds: ${TRAVEL_MCP_MAX_TOOL_ROUNDS:8}
+  api-key: ${TRAVEL_MCP_API_KEY:}
+  amap-key: ${AMAP_MAPS_API_KEY:}
+  tuniu-key: ${TUNIU_API_KEY:}
+  amap-url: ${TRAVEL_MCP_AMAP_URL:}
+  time-url: ${TRAVEL_MCP_TIME_URL:}
+  weather-url: ${TRAVEL_MCP_WEATHER_URL:}
+  flight-url: ${TRAVEL_MCP_FLIGHT_URL:}
+  hotel-url: ${TRAVEL_MCP_HOTEL_URL:}
+  train-url: ${TRAVEL_MCP_TRAIN_URL:}
+  biyingsearch-url: ${TRAVEL_MCP_SEARCH_URL:}
+pgvector:
+  host: ${PGVECTOR_HOST:localhost}
+  port: ${PGVECTOR_PORT:5432}
+  database: ${TRAVEL_DATABASE:travel_planner_db}
+  user: ${PGVECTOR_USER:chat}
+  password: ${PGVECTOR_PASSWORD:}
+  table: agent_embeddings
+  drop-table-first: false
+  create-table: true
+pgcheckpoint:
+  host: ${PGVECTOR_HOST:localhost}
+  port: ${PGVECTOR_PORT:5432}
+  database: ${TRAVEL_DATABASE:travel_planner_db}
+  username: ${PGVECTOR_USER:chat}
+  password: ${PGVECTOR_PASSWORD:}
+auth:
+  secret: ${TRAVEL_JWT_SECRET:}
+rag:
+  upload:
+    max-bytes: 20971520
+    max-text-chars: 200000
+    max-chunks: 1500
+  max-results: 8
+  min-score: 0.6
+  fallback-min-score: 0.45
+  parent-context:
+    enabled: true
+    max-results: 4
+  rerank:
+    enabled: false
+  multi-query:
+    enabled: true
+    count: 3
+    max-merged-results: 24
+  hyde:
+    enabled: false
+    max-chars: 600
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+memory:
+  recent:
+    max-messages: 20
+    ttl-seconds: 604800
+    max-message-chars: 6000
+  summary:
+    keep-messages: 20
+    threshold-messages: 10
+    batch-messages: 40
+    max-input-chars: 12000
+    max-output-chars: 600
