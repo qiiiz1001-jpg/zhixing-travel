@@ -24,7 +24,7 @@
 
 `TRAVEL_MCP_MAX_TOOL_ROUNDS` 控制一次规划中单个 Agent 的工具调用轮数，默认 8。修改 `.env` 后重启应用。高德或途牛账号的限流、套餐和配额由相应平台管理。
 
-数据由 Docker 卷保存。关闭应用的 PowerShell 终端即可停止 Java 服务；后续启动会复用已有数据。更多实现说明见[学习文档](docs/learning/01-多Agent完整流程与运行.md)。
+数据由 Docker 卷保存。关闭应用的 PowerShell 终端即可停止 Java 服务；后续启动会复用已有数据。
 
 ## 前端开发
 
@@ -39,16 +39,3 @@ npm run dev
 ```
 
 开发地址为 `http://localhost:5174/`。
-
-## 验证
-
-启动本地中间件并至少成功启动一次应用，确认数据库迁移完成，再从工程目录运行：
-
-```powershell
-. ./tools/load-env.ps1
-$env:SPRING_PROFILES_ACTIVE = 'infra'
-$env:RUN_INFRA_TESTS = 'true'
-mvn clean verify
-```
-
-请求模型与外部工具的结果取决于实际账号和工具端点权限。
